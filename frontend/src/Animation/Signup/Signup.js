@@ -14,7 +14,7 @@ function Signup() {
 
   return (
     <div>
-      <Lottie options={defaultOptions} height={120} width={130} />
+      <Lottie options={defaultOptions} height={140} width={220} />
     </div>
   );
 }
