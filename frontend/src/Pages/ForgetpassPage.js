@@ -23,12 +23,12 @@ function ForgetpassPage() {
               <Signup />
 
               <div className="mb-[7px] mt-[10px]">
-                <label className="flex font-bold">Your Name</label>
+                <label className="flex font-bold">Username</label>
                 <input
                   type="text"
                   className="w-[12rem] rounded  "
-                  id="name"
-                  name="name"
+                  id="username"
+                  name="username"
                   // value={credentials.email}
                   // onChange={onChange}
                 />

@@ -1,9 +1,11 @@
 import React from "react";
 import Login from "../Animation/Login/Login";
 import bgi from "../assets/background.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function LoginPage() {
+  const navigate = useNavigate();
+
   function handleSubmit(e) {
     e.preventDefault();
     alert("login sucess");
@@ -49,10 +51,13 @@ function LoginPage() {
                   // onChange={onChange}
                 />
               </div>
-              
+
               <button
                 type="submit"
                 className="border-white border-2 rounded-md font-bold bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300 w-[4rem] mb-[1rem]"
+                onClick={() => {
+                  navigate("/chat", { replace: false });
+                }}
               >
                 Login
               </button>

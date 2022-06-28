@@ -1,14 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
 import bgi from "../assets/background.jpg";
 import { Link } from "react-router-dom";
 import Signup from "../Animation/Signup/Signup";
+import Swal from "sweetalert2";
 
 function SignupPage() {
+  const [Values, setValues] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirm: "",
+  });
+
   function handleSubmit(e) {
     e.preventDefault();
-    alert("signup sucess");
+    handleValidation();
   }
 
+  function handleChange(e) {
+    setValues({ ...Values, [e.target.name]: e.target.value });
+  }
+
+  function handleValidation() {
+    const { username, email, password, confirm } = Values;
+    if (password !== confirm) {
+      Swal.fire({ icon: "warning", title: "password missmatched" });
+    } else if (username.length < 3) {
+      Swal.fire({
+        icon: "warning",
+        title: "Oopss!",
+        text: "Username must be at least 3 characters long",
+      });
+    } else if (password.length < 8) {
+      Swal.fire({
+        icon: "warning",
+        title: "Oopss!",
+        text: "Password must be at least 8 characters long",
+      });
+    } else if (email === "") {
+      Swal.fire({
+        icon: "warning",
+        title: "Oopss!",
+        text: "Email cannot be empty",
+      });
+    } else {
+      Swal.fire({
+        icon: "success",
+        title: "Account created successfully",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    }
+  }
   return (
     <>
       <div
@@ -23,18 +66,6 @@ function SignupPage() {
               <Signup />
 
               <div className="mb-[7px] mt-[10px]">
-                <label className="flex font-bold">Your Name</label>
-                <input
-                  type="text"
-                  className="w-[12rem] rounded  "
-                  id="name"
-                  name="name"
-                  // value={credentials.email}
-                  // onChange={onChange}
-                />
-              </div>
-
-              <div className="mb-[7px] mt-[10px]">
                 <label className="flex font-bold">Username</label>
                 <input
                   type="text"
@@ -42,7 +73,7 @@ function SignupPage() {
                   id="username"
                   name="username"
                   // value={credentials.email}
-                  // onChange={onChange}
+                  onChange={handleChange}
                 />
               </div>
 
@@ -57,7 +88,7 @@ function SignupPage() {
                   name="email"
                   aria-describedby="emailHelp"
                   // value={credentials.email}
-                  // onChange={onChange}
+                  onChange={handleChange}
                 />
               </div>
 
@@ -71,7 +102,7 @@ function SignupPage() {
                   id="password"
                   name="password"
                   // value={credentials.password}
-                  // onChange={onChange}
+                  onChange={handleChange}
                 />
               </div>
 
@@ -82,10 +113,10 @@ function SignupPage() {
                 <input
                   type="text"
                   className="w-[12rem] rounded"
-                  id="c_password"
-                  name="c_password"
+                  id="confirm"
+                  name="confirm"
                   // value={credentials.password}
-                  // onChange={onChange}
+                  onChange={handleChange}
                 />
               </div>
 
