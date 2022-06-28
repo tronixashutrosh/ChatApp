@@ -8,7 +8,8 @@ function LoginPage() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    alert("login sucess");
+    navigate("/chat", { replace: false });
+    alert("login successfull");
   }
 
   return (
@@ -55,9 +56,6 @@ function LoginPage() {
               <button
                 type="submit"
                 className="border-white border-2 rounded-md font-bold bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300 w-[4rem] mb-[1rem]"
-                onClick={() => {
-                  navigate("/chat", { replace: false });
-                }}
               >
                 Login
               </button>

@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import bgi from "../assets/background.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Signup from "../Animation/Signup/Signup";
 import Swal from "sweetalert2";
+import axios from "axios";
+import { signupRoute } from "../Utils/APIRoutes";
 
 function SignupPage() {
+  let navigate = useNavigate();
   const [Values, setValues] = useState({
     username: "",
     email: "",
@@ -12,9 +15,36 @@ function SignupPage() {
     confirm: "",
   });
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    handleValidation();
+
+    if (handleValidation()) {
+      const { password, username, email } = Values;
+      const { data } = await axios.post(signupRoute, {
+        username,
+        email,
+        password,
+      });
+
+      if (data.status === false) {
+        Swal.fire({
+          icon: "error",
+          title: "Oppss!",
+          text: data.msg,
+          showConfirmButton: true,
+        });
+      }
+      if (data.status === true) {
+        navigate("/", { replace: false });
+        Swal.fire({
+          icon: "success",
+          title: "Yay! 🎉",
+          text: "Account created successfully",
+          timer: 3000,
+          showConfirmButton: false,
+        });
+      }
+    }
   }
 
   function handleChange(e) {
@@ -25,32 +55,30 @@ function SignupPage() {
     const { username, email, password, confirm } = Values;
     if (password !== confirm) {
       Swal.fire({ icon: "warning", title: "password missmatched" });
+      return false;
     } else if (username.length < 3) {
       Swal.fire({
         icon: "warning",
         title: "Oopss!",
         text: "Username must be at least 3 characters long",
       });
+      return false;
     } else if (password.length < 8) {
       Swal.fire({
         icon: "warning",
         title: "Oopss!",
         text: "Password must be at least 8 characters long",
       });
+      return false;
     } else if (email === "") {
       Swal.fire({
         icon: "warning",
         title: "Oopss!",
         text: "Email cannot be empty",
       });
-    } else {
-      Swal.fire({
-        icon: "success",
-        title: "Account created successfully",
-        timer: 1500,
-        showConfirmButton: false,
-      });
+      return false;
     }
+    return true;
   }
   return (
     <>
@@ -72,7 +100,6 @@ function SignupPage() {
                   className="w-[12rem] rounded"
                   id="username"
                   name="username"
-                  // value={credentials.email}
                   onChange={handleChange}
                 />
               </div>
@@ -87,7 +114,6 @@ function SignupPage() {
                   id="email"
                   name="email"
                   aria-describedby="emailHelp"
-                  // value={credentials.email}
                   onChange={handleChange}
                 />
               </div>
@@ -101,7 +127,6 @@ function SignupPage() {
                   className="w-[12rem] rounded"
                   id="password"
                   name="password"
-                  // value={credentials.password}
                   onChange={handleChange}
                 />
               </div>
@@ -115,7 +140,6 @@ function SignupPage() {
                   className="w-[12rem] rounded"
                   id="confirm"
                   name="confirm"
-                  // value={credentials.password}
                   onChange={handleChange}
                 />
               </div>
