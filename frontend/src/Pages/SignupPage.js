@@ -80,6 +80,7 @@ function SignupPage() {
     }
     return true;
   }
+
   return (
     <>
       <div

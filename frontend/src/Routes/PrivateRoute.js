@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Outlet, Navigate, useLocation } from "react-router-dom";
+import React from "react";
+import { Outlet, Navigate } from "react-router-dom";
 
 function PrivateRoute() {
   let login = sessionStorage.getItem("auth");

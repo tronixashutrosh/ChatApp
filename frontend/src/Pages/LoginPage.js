@@ -1,15 +1,74 @@
-import React from "react";
+import React, { useState } from "react";
 import Login from "../Animation/Login/Login";
 import bgi from "../assets/background.jpg";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { loginRoute } from "../Utils/APIRoutes";
 
 function LoginPage() {
   const navigate = useNavigate();
+  const [Values, setValues] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  // const [isLogin, setIsLogin] = useState(false);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    navigate("/chat", { replace: false });
-    alert("login successfull");
+
+    if (handleValidation()) {
+      const { username, password, email } = Values;
+      const { data } = await axios.post(loginRoute, {
+        username,
+        email,
+        password,
+      });
+
+      if (data.status === false) {
+        sessionStorage.setItem("auth", "false");
+        Swal.fire({
+          icon: "error",
+          title: "Oppss!",
+          text: data.msg,
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      }
+      if (data.status === true) {
+        sessionStorage.setItem("auth", "true");
+        navigate("/chat", { replace: false });
+      }
+    }
+  }
+
+  function handleChange(e) {
+    setValues({ ...Values, [e.target.name]: e.target.value });
+  }
+
+  function handleValidation() {
+    const { username, password } = Values;
+    if (username === "") {
+      Swal.fire({
+        icon: "warning",
+        title: "Oopss!",
+        text: "Username or Email is required",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      return false;
+    } else if (password === "") {
+      Swal.fire({
+        icon: "warning",
+        title: "Oopss!",
+        text: "Password is required",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      return false;
+    }
+    return true;
   }
 
   return (
@@ -27,16 +86,14 @@ function LoginPage() {
 
               <div className="mb-[7px] mt-[10px]">
                 <label htmlFor="email" className="flex font-bold">
-                  Your Email
+                  Username
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   className="w-[12rem] rounded  "
-                  id="email"
-                  name="email"
-                  aria-describedby="emailHelp"
-                  // value={credentials.email}
-                  // onChange={onChange}
+                  id="username"
+                  name="username"
+                  onChange={handleChange}
                 />
               </div>
               <div className="mb-3">
@@ -48,8 +105,7 @@ function LoginPage() {
                   className="w-[12rem] rounded"
                   id="password"
                   name="password"
-                  // value={credentials.password}
-                  // onChange={onChange}
+                  onChange={handleChange}
                 />
               </div>
 
