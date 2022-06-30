@@ -24,5 +24,5 @@ mongoose
   });
 
 const server = app.listen(process.env.PORT, () => {
-  console.log(`server started at PORT ${process.env.PORT}`);
+  console.log(`server started at http://localhost:${process.env.PORT}`);
 });
