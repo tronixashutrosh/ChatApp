@@ -58,9 +58,12 @@ module.exports.account = async (req, res, next) => {
 
 module.exports.allUsers = async (req, res, next) => {
   try {
-    const { username } = req.body;
-    const user = await User.find({ username });
-    res.json(username);
+    const users = await User.find({ _id: { $ne: req.params.id } }).select([
+      "username",
+      "email",
+      "_id",
+    ]);
+    res.json(users);
   } catch (error) {
     next(error);
   }

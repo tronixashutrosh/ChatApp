@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
+import { allUsersRoute } from "../Utils/APIRoutes";
 
 function Chat() {
+  const [Contacts, setContacts] = useState([]);
+  const [currentUser, setCurrentUser] = useState(undefined);
+
+  useEffect(async () => {
+    const { data } = await axios.get(allUsersRoute);
+    console.log(data);
+  }, []);
+
   return (
     <BodyWrapper>
       <div className="subcontainer"></div>
@@ -26,7 +36,7 @@ const BodyWrapper = styled.div`
   .subcontainer {
     display: grid;
     height: 85vh;
-    width: 85vh;
+    width: 85vw;
     background-color: #131324;
     grid-template-columns: 25% 75%;
     @media screen and (min-width: 720px) and (max-width: 1024px) {

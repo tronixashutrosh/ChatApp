@@ -23,7 +23,7 @@ function Account() {
   async function handleSubmit(e) {
     e.preventDefault();
     if (handleValidation()) {
-      const { data } = await axios.post(accountRoute);
+      const data = await axios.post(accountRoute);
       console.log(data);
     }
   }
