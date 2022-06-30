@@ -45,3 +45,23 @@ module.exports.login = async (req, res, next) => {
     next(err);
   }
 };
+
+module.exports.account = async (req, res, next) => {
+  try {
+    const { username } = req.body;
+    const user = await User.find({ username });
+    res.json(username);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.allUsers = async (req, res, next) => {
+  try {
+    const { username } = req.body;
+    const user = await User.find({ username });
+    res.json(username);
+  } catch (error) {
+    next(error);
+  }
+};

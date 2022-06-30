@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { Buffer } from "buffer";
 import Loading from "../Animation/Loading/Loading";
-import { loginRoute } from "../Utils/APIRoutes";
+import { account, accountRoute, loginRoute } from "../Utils/APIRoutes";
 
 function Account() {
   const [Values, setValues] = useState({
@@ -20,9 +20,12 @@ function Account() {
     setProfileData();
   }, []);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    handleValidation();
+    if (handleValidation()) {
+      const { data } = await axios.post(accountRoute);
+      console.log(data);
+    }
   }
 
   function handleChange(e) {
@@ -30,32 +33,17 @@ function Account() {
   }
 
   function handleValidation() {
-    const { email, password, confirm } = Values;
+    const { password, confirm } = Values;
     if (password !== confirm) {
       Swal.fire({ icon: "warning", title: "password missmatched" });
-      return false;
-    } else if (password.length < 8) {
-      Swal.fire({
-        icon: "warning",
-        title: "Oopss!",
-        text: "Password must be at least 8 characters long",
-      });
-      return false;
-    } else if (password === "") {
-      Swal.fire({
-        icon: "warning",
-        title: "Oopss!",
-        text: "Password cannot be empty",
-      });
-      return false;
-    } else if (email === "") {
-      Swal.fire({
-        icon: "warning",
-        title: "Oopss!",
-        text: "Email cannot be empty",
-        timer: 1500,
-        showConfirmButton: false,
-      });
+      if (password.length < 8) {
+        Swal.fire({
+          icon: "warning",
+          title: "Oopss!",
+          text: "Password must be at least 8 characters long",
+        });
+        return false;
+      }
       return false;
     } else {
       setProfilePicture();
